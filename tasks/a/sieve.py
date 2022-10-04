@@ -13,5 +13,19 @@ def sieve(n: int) -> list:
     и возвращает массив простых чисел от 1 до n
     """
     primes = []
-    ...
+
+    if (n > 2):
+        primes.append(2)
+        for i in range(3, n + 1):
+            for p in primes:
+                if not (i % p):
+                    break
+            else:
+                primes.append(i)
+    elif (n == 2): 
+        primes.append(2)               
+    
     return primes
+
+n = int(input("n:"))
+print(sieve(n))

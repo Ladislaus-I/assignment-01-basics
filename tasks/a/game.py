@@ -21,14 +21,23 @@
 """
 
 from typing import Callable
+import random
 
 
 def create_secret(n: int) -> str:
     """
     Функция принимает длину загадываемого числа
-    и возвращает случайную строку из цифр указанной длины
+    и возвращает случайную строку из различных(!) цифр указанной длины
     """
-    return ...
+    #string = ""
+    #for i in range(0, n):
+    #    string += str(random.randint(1, 9))
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    string = ""
+    random.shuffle(numbers)
+    for i in range(0, n):
+        string += str(numbers[i])
+    return string
 
 
 def score(secret: str, guess: str) -> tuple[int, int]:
@@ -40,16 +49,33 @@ def score(secret: str, guess: str) -> tuple[int, int]:
         > для нахождения числа общих позиций может быть полезно
           воспользоваться структурой данных "множество" (set)
     """
-    bulls, cows = ..., ...
+    bulls, cows = 0, 0
+    for i_guess in range(0, len(guess)):
+        for i_secret in range(0, len(secret)):
+            bulls += (secret[i_secret] == guess[i_guess] and i_secret == i_guess)
+            cows += (secret[i_secret] == guess[i_guess] and i_secret != i_guess)
+    
     return bulls, cows
 
 
-def validate(n: int, guess: str) -> bool:
+def validate_len(n: int, guess: str) -> bool:
     """
     Функция принимает параметр игры - длину загаданной строки, и догадку игрока
     и возвращает, правда ли игрок ввел корректную догадку (строку длины n из цифр)
+    """        
+    return (len(guess) == n)
+
+
+def validate_distinct(n: int, guess: str) -> bool:
     """
-    ...
+    check if distinct
+    """        
+    s = set()
+
+    for i in range(0, n):
+        s.add(guess[i])
+
+    return (len(s) == n)
 
 
 def computer_player(n: int) -> Callable:
@@ -79,11 +105,15 @@ def play(n: int, player: Callable):
     """
     secret = create_secret(n)
     attempts = 0
+    print(secret)
     while True:
         guess = player()
         attempts += 1
-        if not validate(n, guess):
+        if not validate_len(n, guess):
             print(f'Your guess should be a string of {n} digits')
+            continue
+        if not validate_distinct(n, guess):
+            print('Your guess should be a string of distinct digits')
             continue
         bulls, cows = score(secret, guess)
         if bulls == n:

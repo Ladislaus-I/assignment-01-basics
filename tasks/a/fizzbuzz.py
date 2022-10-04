@@ -18,4 +18,18 @@ fizzbuzz
 
 
 def fizzbuzz(a: int, b: int):
-    pass
+    i = a
+    while (i < b):
+        if (i % 3 == 0 and i % 5 != 0):
+            print("fizz")
+        elif (i % 3 != 0 and i % 5 == 0):
+            print("buzz")
+        elif (i % 3 == 0 and i % 5 == 0):
+            print("fizzbuzz")
+        else:
+            print(i)
+        i += 1
+
+a = int(input("insert a: "))
+b = int(input("insert b: "))
+fizzbuzz(a, b)

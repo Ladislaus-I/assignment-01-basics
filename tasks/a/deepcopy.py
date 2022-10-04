@@ -27,9 +27,9 @@ def deepcopy(a: list) -> list:
     result = []
     for item in a:
         if type(item) == list:
-            ...  # если элемент - тоже массив
+            result.append(deepcopy(item))  # если элемент - тоже массив
         else:
-            ...  # если элемент - число
+            result.append(item) # если элемент - число
     return result
 
 
